@@ -7,14 +7,22 @@ const path = require("path");
 const cors = require("cors");
 const port = process.env.PORT || 4000;
 
+const dotenv = require("dotenv");
+
+// Load environment variables from .env file
+dotenv.config();
+
 app.use(express.json());
 app.use(cors());
 
 // Database Connection With MongoDB
-mongoose.connect(
-  "mongodb+srv://rvsunil0603:rs1906@ecommerce.swavih4.mongodb.net/e-commerce"
-);
-
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 //Image Storage Engine
 const storage = multer.diskStorage({
   destination: "./upload/images",
